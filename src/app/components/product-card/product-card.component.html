@@ -1,0 +1,8 @@
+<mat-card class="product-card">
+  <img mat-card-image [src]="imageUrl" alt="{{ name }}" />
+  <mat-card-title>{{ name }}</mat-card-title>
+  <mat-card-subtitle>{{ price | currency : "HUF" }}</mat-card-subtitle>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="onAdd()">Kosárba</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,30 @@
+.products-admin-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.product-card {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  img {
+    height: 200px;
+    object-fit: cover;
+  }
+}

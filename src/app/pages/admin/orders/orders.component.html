@@ -1,0 +1,47 @@
+<div class="orders-container">
+  <h2>Rendelések kezelése</h2>
+
+  <div class="order-grid">
+    <mat-card class="order-card" *ngFor="let order of orders">
+      <mat-card-header>
+        <mat-card-title>Rendelés: {{ order.id }}</mat-card-title>
+        <mat-card-subtitle>{{ order.date }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>Vevő:</strong> {{ order.customerName }}</p>
+        <p><strong>Termékek:</strong></p>
+        <ul>
+          <li *ngFor="let item of order.items">{{ item }}</li>
+        </ul>
+        <p><strong>Összeg:</strong> {{ order.total | currency : "HUF" }}</p>
+
+        <mat-chip
+          [color]="order.status === 'Feldolgozva' ? 'primary' : 'warn'"
+          selected
+        >
+          {{ order.status }}
+        </mat-chip>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-stroked-button
+          color="primary"
+          *ngIf="order.status === 'Függőben'"
+          (click)="updateStatus(order, 'Feldolgozva')"
+        >
+          Feldolgozás
+        </button>
+        <button
+          mat-stroked-button
+          color="warn"
+          *ngIf="order.status === 'Feldolgozva'"
+          (click)="updateStatus(order, 'Függőben')"
+        >
+          Visszav
+        </button></mat-card-actions
+      ></mat-card
+    >
+  </div>
+</div>

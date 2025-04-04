@@ -1,0 +1,28 @@
+.admin-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.nav-card {
+  flex: 1 1 300px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.nav-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+mat-icon {
+  font-size: 32px;
+  margin-right: 0.5rem;
+}

@@ -1,0 +1,24 @@
+<div class="products-admin-container">
+  <h2>Termékek kezelése</h2>
+
+  <div class="product-grid">
+    <mat-card class="product-card" *ngFor="let phone of phones">
+      <img mat-card-image [src]="phone.imageUrl" [alt]="phone.name" />
+      <mat-card-title>{{ phone.name }}</mat-card-title>
+      <mat-card-subtitle>{{
+        phone.price | currency : "HUF"
+      }}</mat-card-subtitle>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button color="primary" (click)="editProduct(phone)">
+          <mat-icon>edit</mat-icon>
+          Szerkesztés
+        </button>
+        <button mat-stroked-button color="warn" (click)="deleteProduct(phone)">
+          <mat-icon>delete</mat-icon>
+          Törlés
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

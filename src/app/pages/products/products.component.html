@@ -1,0 +1,10 @@
+<div class="product-grid">
+  <app-product-card
+    *ngFor="let phone of phones"
+    [name]="phone.name"
+    [price]="phone.price"
+    [imageUrl]="phone.imageUrl"
+    (add)="addToCart(phone)"
+  >
+  </app-product-card>
+</div>
