@@ -18,11 +18,16 @@
       <button mat-stroked-button color="warn" (click)="clearCart()">
         Kosár ürítése
       </button>
-      <button mat-raised-button color="primary">Megrendelés</button>
     </div>
   </div>
 
   <ng-template #emptyCart>
     <p class="empty-text">A kosár jelenleg üres.</p>
   </ng-template>
+
+  <div class="continue-button">
+    <button mat-raised-button color="primary" routerLink="/order">
+      Tovább az adatok megadásához
+    </button>
+  </div>
 </div>

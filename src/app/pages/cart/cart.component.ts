@@ -4,11 +4,18 @@ import { CartService, CartItem } from '../../services/cart.service';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatButtonModule, MatCardModule],
+  imports: [
+    CommonModule,
+    MatListModule,
+    MatButtonModule,
+    MatCardModule,
+    RouterModule,
+  ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
