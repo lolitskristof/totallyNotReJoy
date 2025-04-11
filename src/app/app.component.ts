@@ -21,5 +21,5 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'TotallyNotMvm';
+  title = 'totallyNotReJoy';
 }
