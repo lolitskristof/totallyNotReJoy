@@ -10,7 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
@@ -32,7 +35,11 @@ export class RegisterComponent {
   hideConfirmPassword = true;
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) {
     this.registerForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -61,11 +68,22 @@ export class RegisterComponent {
       : { mismatch: true };
   }
 
-  onRegister(): void {
+  async onRegister(): Promise<void> {
     if (this.registerForm.valid) {
       const { email, password } = this.registerForm.value;
-      console.log('Regisztráció:', email, password);
-      // TODO: küldés backendhez vagy Firebase-hez
+      try {
+        await this.userService.registerUser(email, password);
+
+        this.snackBar.open('Sikeres regisztráció!', 'Bezárás', {
+          duration: 3000,
+        });
+
+        window.location.href = '/login';
+      } catch (error: any) {
+        this.snackBar.open('Hiba: ' + error.message, 'Ok', {
+          duration: 5000,
+        });
+      }
     }
   }
 }

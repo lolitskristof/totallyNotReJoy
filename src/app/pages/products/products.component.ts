@@ -1,40 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { CartService } from '../../services/cart.service';
+import { ProductsService, Product } from '../../services/products.service';
+import { QueryDocumentSnapshot, DocumentData } from '@angular/fire/firestore';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [
+    CommonModule,
+    ProductCardComponent,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+  ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent {
-  phones = [
-    {
-      name: 'iPhone 14 Pro',
-      price: 589000,
-      imageUrl:
-        'https://p1.akcdn.net/full/1025523558.apple-iphone-14-pro-128gb.jpg',
-    },
-    {
-      name: 'Samsung Galaxy S23',
-      price: 439000,
-      imageUrl:
-        'https://p1.akcdn.net/full/1102028235.samsung-galaxy-s23-5g-128gb-8gb-ram-dual-sm-s911b.jpg',
-    },
-    {
-      name: 'Xiaomi 13T',
-      price: 289000,
-      imageUrl:
-        'https://p1.akcdn.net/full/1188129505.xiaomi-13t-5g-256gb-8gb-ram-dual.jpg',
-    },
-  ];
+export class ProductsComponent implements OnInit {
+  products: Product[] = [];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null = null;
+  hasMore = true;
+  loading = false;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private productsService: ProductsService
+  ) {}
 
-  addToCart(phone: { name: string; price: number }) {
-    this.cartService.addToCart(phone);
+  ngOnInit(): void {
+    this.loadInitialProducts();
+  }
+
+  loadInitialProducts(): void {
+    this.loading = true;
+    this.productsService.getInitialProducts().then((snapshot) => {
+      this.products = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Product[];
+      this.lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+      this.hasMore = snapshot.docs.length === 6;
+      this.loading = false;
+    });
+  }
+
+  loadMoreProducts(): void {
+    if (!this.lastDoc) return;
+
+    this.loading = true;
+    this.productsService.getNextProducts(this.lastDoc).then((snapshot) => {
+      const newProducts = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Product[];
+
+      this.products = [...this.products, ...newProducts];
+      this.lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+      this.hasMore = snapshot.docs.length === 6;
+      this.loading = false;
+    });
+  }
+
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product);
   }
 }

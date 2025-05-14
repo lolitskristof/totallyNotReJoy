@@ -2,29 +2,45 @@
   <span>totallyNotReJoy</span>
   <span class="spacer"></span>
 
-  <!-- Desktop menü -->
+  <!-- Desktop -->
   <nav class="nav-links desktop-only">
     <a mat-button routerLink="/">Főoldal</a>
     <a mat-button routerLink="/products">Termékek</a>
-    <a mat-button routerLink="/login">Bejelentkezés</a>
-    <a mat-button routerLink="/register">Regisztráció</a>
-    <a mat-button routerLink="/admin">Admin</a>
+    <ng-container *ngIf="(authService.role$ | async) === 'admin'">
+      <a mat-button routerLink="/admin">Admin</a>
+    </ng-container>
+
     <a mat-button routerLink="/cart">Kosár</a>
-    <a mat-button routerLink="/">Kijelentkezés</a>
+
+    <ng-container *ngIf="authService.isLoggedIn; else loggedOut">
+      <a mat-button (click)="logout()">Kijelentkezés</a>
+    </ng-container>
+    <ng-template #loggedOut>
+      <a mat-button routerLink="/login">Bejelentkezés</a>
+      <a mat-button routerLink="/register">Regisztráció</a>
+    </ng-template>
   </nav>
 
-  <!-- Mobil menü -->
+  <!-- Mobil -->
   <button mat-icon-button [matMenuTriggerFor]="mobileMenu" class="mobile-only">
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #mobileMenu="matMenu">
     <button mat-menu-item routerLink="/">Főoldal</button>
     <button mat-menu-item routerLink="/products">Termékek</button>
-    <button mat-menu-item routerLink="/login">Bejelentkezés</button>
-    <button mat-menu-item routerLink="/register">Regisztráció</button>
-    <button mat-menu-item routerLink="/admin">Admin</button>
+    <ng-container *ngIf="(authService.role$ | async) === 'admin'">
+      <button mat-menu-item routerLink="/admin">Admin</button>
+    </ng-container>
+
     <button mat-menu-item routerLink="/cart">Kosár</button>
-    <button mat-menu-item routerLink="/">Kijelentkezés</button>
+
+    <ng-container *ngIf="authService.isLoggedIn; else mobileLoggedOut">
+      <button mat-menu-item (click)="logout()">Kijelentkezés</button>
+    </ng-container>
+    <ng-template #mobileLoggedOut>
+      <button mat-menu-item routerLink="/login">Bejelentkezés</button>
+      <button mat-menu-item routerLink="/register">Regisztráció</button>
+    </ng-template>
   </mat-menu>
 </mat-toolbar>
 

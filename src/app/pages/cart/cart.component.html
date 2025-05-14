@@ -5,13 +5,13 @@
     <mat-card class="cart-item" *ngFor="let item of items">
       <div class="item-info">
         <div class="item-name">{{ item.name }}</div>
-        <div class="item-price">{{ item.price | currency : "HUF" }}</div>
+        <div class="item-price">{{ item.price | priceFormat }}</div>
       </div>
     </mat-card>
 
     <div class="cart-summary">
       <div class="total-label">Végösszeg:</div>
-      <div class="total-value">{{ total | currency : "HUF" }}</div>
+      <div class="total-value">{{ total | priceFormat }}</div>
     </div>
 
     <div class="cart-actions">
@@ -26,7 +26,12 @@
   </ng-template>
 
   <div class="continue-button">
-    <button mat-raised-button color="primary" routerLink="/order">
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/order"
+      [disabled]="items.length === 0"
+    >
       Tovább az adatok megadásához
     </button>
   </div>

@@ -1,14 +1,13 @@
 .products-admin-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .product-card {
@@ -27,4 +26,10 @@
     height: 200px;
     object-fit: cover;
   }
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }

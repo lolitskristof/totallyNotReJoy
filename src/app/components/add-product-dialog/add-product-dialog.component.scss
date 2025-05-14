@@ -1,0 +1,32 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+
+  mat-form-field {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog-form {
+    padding: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
