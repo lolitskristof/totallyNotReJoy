@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/totally-not-rejoy/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

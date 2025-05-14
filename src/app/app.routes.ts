@@ -1,18 +1,36 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { ProductsComponent } from './pages/products/products.component';
-import { CartComponent } from './pages/cart/cart.component';
-import { OrderComponent } from './pages/order/order.component';
 import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'products', component: ProductsComponent },
-  { path: 'cart', component: CartComponent },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./pages/products/products.component').then(
+        (m) => m.ProductsComponent
+      ),
+  },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./pages/cart/cart.component').then((m) => m.CartComponent),
+  },
   {
     path: 'admin',
     canActivate: [adminGuard],
@@ -38,5 +56,9 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: 'order', component: OrderComponent },
+  {
+    path: 'order',
+    loadComponent: () =>
+      import('./pages/order/order.component').then((m) => m.OrderComponent),
+  },
 ];
