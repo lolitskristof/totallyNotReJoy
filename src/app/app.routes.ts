@@ -4,8 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { CartComponent } from './pages/cart/cart.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { OrderComponent } from './pages/order/order.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   {
     path: 'admin',
+    canActivate: [adminGuard],
     children: [
       {
         path: '',

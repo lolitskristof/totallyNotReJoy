@@ -1,24 +1,63 @@
 <div class="products-admin-container">
   <h2>Termékek kezelése</h2>
 
-  <div class="product-grid">
-    <mat-card class="product-card" *ngFor="let phone of phones">
-      <img mat-card-image [src]="phone.imageUrl" [alt]="phone.name" />
-      <mat-card-title>{{ phone.name }}</mat-card-title>
-      <mat-card-subtitle>{{
-        phone.price | currency : "HUF"
-      }}</mat-card-subtitle>
+  <button mat-raised-button color="primary" (click)="openAddProductDialog()">
+    <mat-icon>add</mat-icon>
+    Termék hozzáadása
+  </button>
 
-      <mat-card-actions align="end">
-        <button mat-stroked-button color="primary" (click)="editProduct(phone)">
-          <mat-icon>edit</mat-icon>
-          Szerkesztés
-        </button>
-        <button mat-stroked-button color="warn" (click)="deleteProduct(phone)">
-          <mat-icon>delete</mat-icon>
-          Törlés
-        </button>
-      </mat-card-actions>
-    </mat-card>
+  <div class="filters">
+    <mat-form-field appearance="fill">
+      <mat-label>Szűrés márka szerint</mat-label>
+      <mat-select [(value)]="selectedBrand">
+        <mat-option value="all">Összes</mat-option>
+        <mat-option *ngFor="let brand of brands" [value]="brand">
+          {{ brand }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rendezés</mat-label>
+      <mat-select [(value)]="sortOrder">
+        <mat-option value="asc">Ár szerint: növekvő</mat-option>
+        <mat-option value="desc">Ár szerint: csökkenő</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
+
+  <div class="product-grid">
+    <ng-container *ngIf="!loading; else loadingSpinner">
+      <mat-card class="product-card" *ngFor="let product of filteredProducts">
+        <img mat-card-image [src]="product.imageUrl" [alt]="product.name" />
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ product.price | priceFormat }}
+        </mat-card-subtitle>
+
+        <mat-card-actions align="end">
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="editProduct(product)"
+          >
+            <mat-icon>edit</mat-icon>
+            Szerkesztés
+          </button>
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="deleteProduct(product)"
+          >
+            <mat-icon>delete</mat-icon>
+            Törlés
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+  </div>
+
+  <ng-template #loadingSpinner>
+    <p>Betöltés...</p>
+  </ng-template>
 </div>

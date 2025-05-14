@@ -1,20 +1,40 @@
 <div class="orders-container">
   <h2>Rendelések kezelése</h2>
 
+  <mat-form-field appearance="fill" class="status-filter">
+    <mat-label>Szűrés státusz szerint</mat-label>
+    <mat-select [(value)]="filter">
+      <mat-option value="all">Összes</mat-option>
+      <mat-option value="Függőben">Függőben</mat-option>
+      <mat-option value="Feldolgozva">Feldolgozva</mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <div class="order-grid">
-    <mat-card class="order-card" *ngFor="let order of orders">
+    <mat-card class="order-card" *ngFor="let order of filteredOrders">
       <mat-card-header>
         <mat-card-title>Rendelés: {{ order.id }}</mat-card-title>
-        <mat-card-subtitle>{{ order.date }}</mat-card-subtitle>
+        <mat-card-subtitle>
+          {{ order.createdAt.toDate() | date : "yyyy.MM.dd - HH:mm:ss" }}
+        </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
         <p><strong>Vevő:</strong> {{ order.customerName }}</p>
+        <p><strong>Email:</strong> {{ order.email }}</p>
+        <p><strong>Telefon:</strong> {{ order.phone }}</p>
+        <p><strong>Cím:</strong> {{ order.address }}</p>
+
         <p><strong>Termékek:</strong></p>
         <ul>
           <li *ngFor="let item of order.items">{{ item }}</li>
         </ul>
-        <p><strong>Összeg:</strong> {{ order.total | currency : "HUF" }}</p>
+
+        <p><strong>Összeg:</strong> {{ order.total | priceFormat }}</p>
+
+        <p *ngIf="order.comment">
+          <strong>Megjegyzés:</strong> {{ order.comment }}
+        </p>
 
         <mat-chip
           [color]="order.status === 'Feldolgozva' ? 'primary' : 'warn'"
@@ -39,9 +59,20 @@
           *ngIf="order.status === 'Feldolgozva'"
           (click)="updateStatus(order, 'Függőben')"
         >
-          Visszav
-        </button></mat-card-actions
-      ></mat-card
+          Visszavonás
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="load-more" *ngIf="hasMore">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="loadMoreOrders()"
+      [disabled]="loading"
     >
+      További rendelések
+    </button>
   </div>
 </div>
