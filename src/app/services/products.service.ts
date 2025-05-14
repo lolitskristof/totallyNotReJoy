@@ -47,7 +47,6 @@ export class ProductsService {
     return getDocs(q);
   }
 
-  // 🔄 Új: következő oldal lekérdezése
   getNextProducts(lastDoc: QueryDocumentSnapshot<DocumentData>) {
     const ref = collection(this.firestore, 'products');
     const q = query(

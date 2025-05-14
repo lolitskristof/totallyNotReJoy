@@ -61,4 +61,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/order/order.component').then((m) => m.OrderComponent),
   },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];

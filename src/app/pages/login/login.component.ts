@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -53,19 +55,34 @@ export class LoginComponent {
     return this.loginForm.get('password')!;
   }
 
-  async onLogin(): Promise<void> {
+  async onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
       try {
-        await this.authService.login(email, password);
+        await this.authService.login(
+          this.loginForm.value.email,
+          this.loginForm.value.password
+        );
+
         this.snackBar.open('Sikeres bejelentkezés!', 'Bezárás', {
           duration: 3000,
         });
-        window.location.href = '/';
+
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
+        const userRole = this.authService.userRole;
+        if (userRole === 'admin') {
+          await this.router.navigate(['/admin']);
+        } else {
+          await this.router.navigate(['/']);
+        }
       } catch (error: any) {
-        this.snackBar.open('Hiba: ' + error.message, 'Ok', {
-          duration: 5000,
-        });
+        this.snackBar.open(
+          error.message || 'Hiba történt a bejelentkezés során!',
+          'Bezárás',
+          {
+            duration: 5000,
+          }
+        );
       }
     }
   }
